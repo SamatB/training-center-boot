@@ -1,15 +1,21 @@
 package com.training.trainingcenterboot.model;
 
-import lombok.AllArgsConstructor;
+import jakarta.persistence.*;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
+@Entity
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Student {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
+
     private int age;
+
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    private Course course;
 }

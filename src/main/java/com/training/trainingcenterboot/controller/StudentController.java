@@ -16,6 +16,12 @@ public class StudentController {
         this.studentService = studentService;
     }
 
+    @PostMapping("/course/{courseId}")
+    public Student create(@RequestBody Student student,
+                          @PathVariable Long courseId) {
+        return studentService.create(student, courseId);
+    }
+
     @GetMapping
     public List<Student> getAll() {
         return studentService.getAll();
@@ -26,9 +32,24 @@ public class StudentController {
         return studentService.getById(id);
     }
 
-    @PostMapping
-    public Student create(@RequestBody Student student) {
-        return studentService.create(student);
+    @GetMapping("/search")
+    public List<Student> search(@RequestParam String name) {
+        return studentService.searchByName(name);
+    }
+
+    @GetMapping("/adults")
+    public List<Student> getAdults() {
+        return studentService.getAdults();
+    }
+
+    @GetMapping("/course/{courseId}")
+    public List<Student> getByCourse(@PathVariable Long courseId) {
+        return studentService.getByCourse(courseId);
+    }
+
+    @GetMapping("/adults/course")
+    public List<Student> getAdultsByCourse(@RequestParam String title) {
+        return studentService.getAdultStudentsByCourse(title);
     }
 
     @PutMapping("/{id}")
@@ -37,14 +58,14 @@ public class StudentController {
         return studentService.update(id, student);
     }
 
+    @PatchMapping("/{studentId}/course/{courseId}")
+    public Student changeCourse(@PathVariable Long studentId,
+                                @PathVariable Long courseId) {
+        return studentService.changeCourse(studentId, courseId);
+    }
+
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable Long id) {
-        boolean deleted = studentService.delete(id);
-
-        if (deleted) {
-            return "Student deleted";
-        }
-
-        return "Student not found";
+    public void delete(@PathVariable Long id) {
+        studentService.delete(id);
     }
 }
