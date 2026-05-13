@@ -1,3 +1,5 @@
+// controller/StudentController.java
+
 package com.training.trainingcenterboot.controller;
 
 import com.training.trainingcenterboot.model.Student;
@@ -16,56 +18,34 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    @PostMapping("/course/{courseId}")
-    public Student create(@RequestBody Student student,
-                          @PathVariable Long courseId) {
-        return studentService.create(student, courseId);
-    }
-
     @GetMapping
     public List<Student> getAll() {
         return studentService.getAll();
     }
 
-    @GetMapping("/{id}")
-    public Student getById(@PathVariable Long id) {
-        return studentService.getById(id);
+    @PostMapping
+    public Student create(@RequestBody Student student) {
+        return studentService.create(student);
     }
 
-    @GetMapping("/search")
-    public List<Student> search(@RequestParam String name) {
-        return studentService.searchByName(name);
+    @GetMapping("/age-greater-than")
+    public List<Student> getByAgeGreaterThan(@RequestParam int age) {
+        return studentService.getByAgeGreaterThan(age);
     }
 
-    @GetMapping("/adults")
-    public List<Student> getAdults() {
-        return studentService.getAdults();
+    @GetMapping("/email")
+    public Student getByEmail(@RequestParam String email) {
+        return studentService.getByEmail(email);
     }
 
-    @GetMapping("/course/{courseId}")
-    public List<Student> getByCourse(@PathVariable Long courseId) {
-        return studentService.getByCourse(courseId);
+    @GetMapping("/age-between")
+    public List<Student> getStudentsBetweenAges(@RequestParam int min,
+                                                @RequestParam int max) {
+        return studentService.getStudentsBetweenAges(min, max);
     }
 
-    @GetMapping("/adults/course")
-    public List<Student> getAdultsByCourse(@RequestParam String title) {
-        return studentService.getAdultStudentsByCourse(title);
-    }
-
-    @PutMapping("/{id}")
-    public Student update(@PathVariable Long id,
-                          @RequestBody Student student) {
-        return studentService.update(id, student);
-    }
-
-    @PatchMapping("/{studentId}/course/{courseId}")
-    public Student changeCourse(@PathVariable Long studentId,
-                                @PathVariable Long courseId) {
-        return studentService.changeCourse(studentId, courseId);
-    }
-
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        studentService.delete(id);
+    @GetMapping("/ordered-by-age")
+    public List<Student> getStudentsOrderedByAge() {
+        return studentService.getStudentsOrderedByAge();
     }
 }

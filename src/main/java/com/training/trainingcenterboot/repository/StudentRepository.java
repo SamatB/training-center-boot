@@ -8,19 +8,13 @@ import java.util.List;
 
 public interface StudentRepository extends JpaRepository<Student, Long> {
 
-    List<Student> findByNameContainingIgnoreCase(String name);
+    List<Student> findByAgeGreaterThan(int age);
 
-    List<Student> findByAgeGreaterThanEqual(int age);
+    Student findByEmail(String email);
 
-    List<Student> findByCourseId(Long courseId);
+    @Query("SELECT s FROM Student s WHERE s.age BETWEEN :min AND :max")
+    List<Student> findStudentsBetweenAges(int min, int max);
 
-    boolean existsByNameAndCourseId(String name, Long courseId);
-
-    @Query("""
-       SELECT s
-       FROM Student s
-       WHERE s.age >= :age
-       AND s.course.title = :courseTitle
-       """)
-    List<Student> findAdultStudentsByCourse(int age, String courseTitle);
+    @Query("SELECT s FROM Student s ORDER BY s.age DESC")
+    List<Student> findStudentsOrderedByAge();
 }

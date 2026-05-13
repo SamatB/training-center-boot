@@ -19,6 +19,10 @@ public class Enrollment {
 
     private LocalDate enrolledAt;
 
+    private int progress;
+
+    private boolean paymentStatus;
+
     @ManyToOne
     @JoinColumn(name = "student_id")
     private Student student;

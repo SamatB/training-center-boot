@@ -1,3 +1,5 @@
+// controller/CourseController.java
+
 package com.training.trainingcenterboot.controller;
 
 import com.training.trainingcenterboot.model.Course;
@@ -16,39 +18,35 @@ public class CourseController {
         this.courseService = courseService;
     }
 
-    @PostMapping
-    public Course create(@RequestBody Course course) {
-        return courseService.create(course);
-    }
-
     @GetMapping
     public List<Course> getAll() {
         return courseService.getAll();
     }
 
-    @GetMapping("/{id}")
-    public Course getById(@PathVariable Long id) {
-        return courseService.getById(id);
+    @PostMapping("/{teacherId}")
+    public Course create(@RequestBody Course course,
+                         @PathVariable Long teacherId) {
+        return courseService.create(course, teacherId);
     }
 
-    @GetMapping("/title/{title}")
-    public Course getByTitle(@PathVariable String title) {
-        return courseService.getByTitle(title);
+    @GetMapping("/price-less-than")
+    public List<Course> getByPriceLessThan(@RequestParam double price) {
+        return courseService.getByPriceLessThan(price);
     }
 
-    @GetMapping("/search")
-    public List<Course> search(@RequestParam String keyword) {
-        return courseService.searchByTitle(keyword);
+    @GetMapping("/long")
+    public List<Course> getLongCourses(@RequestParam int duration) {
+        return courseService.getLongCourses(duration);
     }
 
-    @PutMapping("/{id}")
-    public Course update(@PathVariable Long id,
-                         @RequestBody Course course) {
-        return courseService.update(id, course);
+    @GetMapping("/price-range")
+    public List<Course> getCoursesByPriceRange(@RequestParam double min,
+                                               @RequestParam double max) {
+        return courseService.getCoursesByPriceRange(min, max);
     }
 
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        courseService.delete(id);
+    @GetMapping("/ordered-by-price")
+    public List<Course> getCoursesOrderedByPrice() {
+        return courseService.getCoursesOrderedByPrice();
     }
 }

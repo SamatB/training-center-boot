@@ -1,14 +1,14 @@
 package com.training.trainingcenterboot.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import java.util.ArrayList;
-import java.util.List;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Course {
 
     @Id
@@ -17,9 +17,11 @@ public class Course {
 
     private String title;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "course",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
-    private List<Student> students = new ArrayList<>();
+    private int duration;
+
+    private double price;
+
+    @ManyToOne
+    @JoinColumn(name = "teacher_id")
+    private Teacher teacher;
 }

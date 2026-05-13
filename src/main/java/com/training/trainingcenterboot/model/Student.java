@@ -1,10 +1,14 @@
 package com.training.trainingcenterboot.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Student {
 
     @Id
@@ -15,7 +19,6 @@ public class Student {
 
     private int age;
 
-    @ManyToOne
-    @JoinColumn(name = "course_id")
-    private Course course;
+    @Column(unique = true)
+    private String email;
 }
