@@ -1,13 +1,16 @@
-// service/EnrollmentService.java
-
 package com.training.trainingcenterboot.service;
 
+import com.training.trainingcenterboot.dto.request.EnrollmentRequest;
+import com.training.trainingcenterboot.dto.request.ProgressRequest;
+import com.training.trainingcenterboot.dto.response.EnrollmentResponse;
+import com.training.trainingcenterboot.exception.BadRequestException;
+import com.training.trainingcenterboot.exception.DuplicateResourceException;
+import com.training.trainingcenterboot.exception.ResourceNotFoundException;
+import com.training.trainingcenterboot.mapper.EnrollmentMapper;
 import com.training.trainingcenterboot.model.Course;
 import com.training.trainingcenterboot.model.Enrollment;
 import com.training.trainingcenterboot.model.Student;
-import com.training.trainingcenterboot.repository.CourseRepository;
 import com.training.trainingcenterboot.repository.EnrollmentRepository;
-import com.training.trainingcenterboot.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -17,24 +20,30 @@ import java.util.List;
 public class EnrollmentService {
 
     private final EnrollmentRepository enrollmentRepository;
-    private final StudentRepository studentRepository;
-    private final CourseRepository courseRepository;
+    private final StudentService studentService;
+    private final CourseService courseService;
+    private final EnrollmentMapper enrollmentMapper;
 
     public EnrollmentService(EnrollmentRepository enrollmentRepository,
-                             StudentRepository studentRepository,
-                             CourseRepository courseRepository) {
+                             StudentService studentService,
+                             CourseService courseService,
+                             EnrollmentMapper enrollmentMapper) {
         this.enrollmentRepository = enrollmentRepository;
-        this.studentRepository = studentRepository;
-        this.courseRepository = courseRepository;
+        this.studentService = studentService;
+        this.courseService = courseService;
+        this.enrollmentMapper = enrollmentMapper;
     }
 
-    public List<Enrollment> getAll() {
-        return enrollmentRepository.findAll();
-    }
+    public EnrollmentResponse enroll(EnrollmentRequest request) {
+        if (enrollmentRepository.existsByStudentIdAndCourseId(
+                request.getStudentId(),
+                request.getCourseId()
+        )) {
+            throw new DuplicateResourceException("Студент уже записан на этот курс");
+        }
 
-    public Enrollment enroll(Long studentId, Long courseId) {
-        Student student = studentRepository.findById(studentId).orElseThrow();
-        Course course = courseRepository.findById(courseId).orElseThrow();
+        Student student = studentService.findStudentById(request.getStudentId());
+        Course course = courseService.findCourseById(request.getCourseId());
 
         Enrollment enrollment = new Enrollment();
         enrollment.setStudent(student);
@@ -43,22 +52,65 @@ public class EnrollmentService {
         enrollment.setProgress(0);
         enrollment.setPaymentStatus(false);
 
-        return enrollmentRepository.save(enrollment);
+        return enrollmentMapper.toResponse(enrollmentRepository.save(enrollment));
     }
 
-    public List<Enrollment> getByPaymentStatus(boolean paymentStatus) {
-        return enrollmentRepository.findByPaymentStatus(paymentStatus);
+    public List<EnrollmentResponse> getAll() {
+        return enrollmentRepository.findAll()
+                .stream()
+                .map(enrollmentMapper::toResponse)
+                .toList();
     }
 
-    public List<Enrollment> getSuccessfulStudents(int progress) {
-        return enrollmentRepository.successfulStudents(progress);
+    public EnrollmentResponse pay(Long enrollmentId) {
+        Enrollment enrollment = findEnrollmentById(enrollmentId);
+
+        if (enrollment.isPaymentStatus()) {
+            throw new BadRequestException("Курс уже оплачен");
+        }
+
+        enrollment.setPaymentStatus(true);
+
+        return enrollmentMapper.toResponse(enrollmentRepository.save(enrollment));
     }
 
-    public List<Enrollment> getUnpaidStudents() {
-        return enrollmentRepository.unpaidStudents();
+    public EnrollmentResponse updateProgress(Long enrollmentId, ProgressRequest request) {
+        Enrollment enrollment = findEnrollmentById(enrollmentId);
+
+        if (!enrollment.isPaymentStatus()) {
+            throw new BadRequestException("Нельзя обновить прогресс без оплаты курса");
+        }
+
+        enrollment.setProgress(request.getProgress());
+
+        return enrollmentMapper.toResponse(enrollmentRepository.save(enrollment));
     }
 
-    public List<Enrollment> getByCourseName(String courseTitle) {
-        return enrollmentRepository.byCourseName(courseTitle);
+    public List<EnrollmentResponse> getPaidStudents() {
+        return enrollmentRepository.findByPaymentStatus(true)
+                .stream()
+                .map(enrollmentMapper::toResponse)
+                .toList();
+    }
+
+    public List<EnrollmentResponse> getSuccessfulStudents(int progress) {
+        return enrollmentRepository.successfulStudents(progress)
+                .stream()
+                .map(enrollmentMapper::toResponse)
+                .toList();
+    }
+
+    public List<EnrollmentResponse> getByCourseTitle(String title) {
+        return enrollmentRepository.byCourseName(title)
+                .stream()
+                .map(enrollmentMapper::toResponse)
+                .toList();
+    }
+
+    private Enrollment findEnrollmentById(Long id) {
+        return enrollmentRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Запись на курс с id " + id + " не найдена")
+                );
     }
 }

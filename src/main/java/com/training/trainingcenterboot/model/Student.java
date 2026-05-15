@@ -1,12 +1,11 @@
 package com.training.trainingcenterboot.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Student {
@@ -16,9 +15,8 @@ public class Student {
     private Long id;
 
     private String name;
-
     private int age;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
 }

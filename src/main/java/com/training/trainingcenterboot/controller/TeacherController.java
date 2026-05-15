@@ -1,9 +1,9 @@
-// controller/TeacherController.java
-
 package com.training.trainingcenterboot.controller;
 
-import com.training.trainingcenterboot.model.Teacher;
+import com.training.trainingcenterboot.dto.request.TeacherRequest;
+import com.training.trainingcenterboot.dto.response.TeacherResponse;
 import com.training.trainingcenterboot.service.TeacherService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,22 +19,17 @@ public class TeacherController {
     }
 
     @GetMapping
-    public List<Teacher> getAll() {
+    public List<TeacherResponse> getAll() {
         return teacherService.getAll();
     }
 
     @PostMapping
-    public Teacher create(@RequestBody Teacher teacher) {
-        return teacherService.create(teacher);
+    public TeacherResponse create(@Valid @RequestBody TeacherRequest request) {
+        return teacherService.create(request);
     }
 
     @GetMapping("/experienced")
-    public List<Teacher> getExperiencedTeachers(@RequestParam int experience) {
+    public List<TeacherResponse> experienced(@RequestParam int experience) {
         return teacherService.getExperiencedTeachers(experience);
-    }
-
-    @GetMapping("/sorted")
-    public List<Teacher> getSortedTeachers() {
-        return teacherService.getSortedTeachers();
     }
 }

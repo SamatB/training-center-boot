@@ -1,9 +1,9 @@
-// controller/StudentController.java
-
 package com.training.trainingcenterboot.controller;
 
-import com.training.trainingcenterboot.model.Student;
+import com.training.trainingcenterboot.dto.request.StudentRequest;
+import com.training.trainingcenterboot.dto.response.StudentResponse;
 import com.training.trainingcenterboot.service.StudentService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,33 +19,40 @@ public class StudentController {
     }
 
     @GetMapping
-    public List<Student> getAll() {
+    public List<StudentResponse> getAll() {
         return studentService.getAll();
     }
 
+    @GetMapping("/{id}")
+    public StudentResponse getById(@PathVariable Long id) {
+        return studentService.getById(id);
+    }
+
     @PostMapping
-    public Student create(@RequestBody Student student) {
-        return studentService.create(student);
+    public StudentResponse create(@Valid @RequestBody StudentRequest request) {
+        return studentService.create(request);
     }
 
-    @GetMapping("/age-greater-than")
-    public List<Student> getByAgeGreaterThan(@RequestParam int age) {
-        return studentService.getByAgeGreaterThan(age);
+    @PutMapping("/{id}")
+    public StudentResponse update(@PathVariable Long id,
+                                  @Valid @RequestBody StudentRequest request) {
+        return studentService.update(id, request);
     }
 
-    @GetMapping("/email")
-    public Student getByEmail(@RequestParam String email) {
-        return studentService.getByEmail(email);
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable Long id) {
+        studentService.delete(id);
+        return "Студент успешно удален";
     }
 
-    @GetMapping("/age-between")
-    public List<Student> getStudentsBetweenAges(@RequestParam int min,
-                                                @RequestParam int max) {
+    @GetMapping("/older-than")
+    public List<StudentResponse> olderThan(@RequestParam int age) {
+        return studentService.getStudentsOlderThan(age);
+    }
+
+    @GetMapping("/between-ages")
+    public List<StudentResponse> betweenAges(@RequestParam int min,
+                                             @RequestParam int max) {
         return studentService.getStudentsBetweenAges(min, max);
-    }
-
-    @GetMapping("/ordered-by-age")
-    public List<Student> getStudentsOrderedByAge() {
-        return studentService.getStudentsOrderedByAge();
     }
 }

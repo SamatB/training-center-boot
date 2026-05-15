@@ -1,11 +1,12 @@
-// service/CourseService.java
-
 package com.training.trainingcenterboot.service;
 
+import com.training.trainingcenterboot.dto.request.CourseRequest;
+import com.training.trainingcenterboot.dto.response.CourseResponse;
+import com.training.trainingcenterboot.exception.ResourceNotFoundException;
+import com.training.trainingcenterboot.mapper.CourseMapper;
 import com.training.trainingcenterboot.model.Course;
 import com.training.trainingcenterboot.model.Teacher;
 import com.training.trainingcenterboot.repository.CourseRepository;
-import com.training.trainingcenterboot.repository.TeacherRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,37 +15,56 @@ import java.util.List;
 public class CourseService {
 
     private final CourseRepository courseRepository;
-    private final TeacherRepository teacherRepository;
+    private final TeacherService teacherService;
+    private final CourseMapper courseMapper;
 
     public CourseService(CourseRepository courseRepository,
-                         TeacherRepository teacherRepository) {
+                         TeacherService teacherService,
+                         CourseMapper courseMapper) {
         this.courseRepository = courseRepository;
-        this.teacherRepository = teacherRepository;
+        this.teacherService = teacherService;
+        this.courseMapper = courseMapper;
     }
 
-    public List<Course> getAll() {
-        return courseRepository.findAll();
+    public List<CourseResponse> getAll() {
+        return courseRepository.findAll()
+                .stream()
+                .map(courseMapper::toResponse)
+                .toList();
     }
 
-    public Course create(Course course, Long teacherId) {
-        Teacher teacher = teacherRepository.findById(teacherId).orElseThrow();
+    public CourseResponse create(CourseRequest request) {
+        Teacher teacher = teacherService.findTeacherById(request.getTeacherId());
+
+        Course course = courseMapper.toEntity(request);
         course.setTeacher(teacher);
-        return courseRepository.save(course);
+
+        return courseMapper.toResponse(courseRepository.save(course));
     }
 
-    public List<Course> getByPriceLessThan(double price) {
-        return courseRepository.findByPriceLessThan(price);
+    public CourseResponse getById(Long id) {
+        Course course = findCourseById(id);
+        return courseMapper.toResponse(course);
     }
 
-    public List<Course> getLongCourses(int duration) {
-        return courseRepository.longCourses(duration);
+    public List<CourseResponse> getCheapCourses(double price) {
+        return courseRepository.findByPriceLessThan(price)
+                .stream()
+                .map(courseMapper::toResponse)
+                .toList();
     }
 
-    public List<Course> getCoursesByPriceRange(double min, double max) {
-        return courseRepository.coursesByPriceRange(min, max);
+    public List<CourseResponse> getLongCourses(int duration) {
+        return courseRepository.findLongCourses(duration)
+                .stream()
+                .map(courseMapper::toResponse)
+                .toList();
     }
 
-    public List<Course> getCoursesOrderedByPrice() {
-        return courseRepository.orderByPrice();
+    public Course findCourseById(Long id) {
+        return courseRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Курс с id " + id + " не найден")
+                );
     }
 }

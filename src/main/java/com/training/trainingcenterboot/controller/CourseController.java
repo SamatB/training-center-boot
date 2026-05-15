@@ -1,9 +1,9 @@
-// controller/CourseController.java
-
 package com.training.trainingcenterboot.controller;
 
-import com.training.trainingcenterboot.model.Course;
+import com.training.trainingcenterboot.dto.request.CourseRequest;
+import com.training.trainingcenterboot.dto.response.CourseResponse;
 import com.training.trainingcenterboot.service.CourseService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,34 +19,27 @@ public class CourseController {
     }
 
     @GetMapping
-    public List<Course> getAll() {
+    public List<CourseResponse> getAll() {
         return courseService.getAll();
     }
 
-    @PostMapping("/{teacherId}")
-    public Course create(@RequestBody Course course,
-                         @PathVariable Long teacherId) {
-        return courseService.create(course, teacherId);
+    @GetMapping("/{id}")
+    public CourseResponse getById(@PathVariable Long id) {
+        return courseService.getById(id);
     }
 
-    @GetMapping("/price-less-than")
-    public List<Course> getByPriceLessThan(@RequestParam double price) {
-        return courseService.getByPriceLessThan(price);
+    @PostMapping
+    public CourseResponse create(@Valid @RequestBody CourseRequest request) {
+        return courseService.create(request);
+    }
+
+    @GetMapping("/cheap")
+    public List<CourseResponse> cheap(@RequestParam double price) {
+        return courseService.getCheapCourses(price);
     }
 
     @GetMapping("/long")
-    public List<Course> getLongCourses(@RequestParam int duration) {
+    public List<CourseResponse> longCourses(@RequestParam int duration) {
         return courseService.getLongCourses(duration);
-    }
-
-    @GetMapping("/price-range")
-    public List<Course> getCoursesByPriceRange(@RequestParam double min,
-                                               @RequestParam double max) {
-        return courseService.getCoursesByPriceRange(min, max);
-    }
-
-    @GetMapping("/ordered-by-price")
-    public List<Course> getCoursesOrderedByPrice() {
-        return courseService.getCoursesOrderedByPrice();
     }
 }

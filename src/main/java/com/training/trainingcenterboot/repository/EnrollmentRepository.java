@@ -22,4 +22,6 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
             WHERE e.course.title = :courseTitle
             """)
     List<Enrollment> byCourseName(String courseTitle);
+
+    boolean existsByStudentIdAndCourseId(Long studentId, Long courseId);
 }

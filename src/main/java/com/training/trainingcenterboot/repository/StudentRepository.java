@@ -12,6 +12,8 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     Student findByEmail(String email);
 
+    boolean existsByEmail(String email);
+
     @Query("SELECT s FROM Student s WHERE s.age BETWEEN :min AND :max")
     List<Student> findStudentsBetweenAges(int min, int max);
 
