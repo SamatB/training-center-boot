@@ -28,10 +28,10 @@ public class StudentController {
         return studentService.getById(id);
     }
 
-    @PostMapping
-    public StudentResponse create(@Valid @RequestBody StudentRequest request) {
-        return studentService.create(request);
-    }
+//    @PostMapping
+//    public StudentResponse create(@Valid @RequestBody StudentRequest request) {
+//        return studentService.create(request);
+//    }
 
     @PutMapping("/{id}")
     public StudentResponse update(@PathVariable Long id,

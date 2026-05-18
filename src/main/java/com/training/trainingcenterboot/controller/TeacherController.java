@@ -23,10 +23,10 @@ public class TeacherController {
         return teacherService.getAll();
     }
 
-    @PostMapping
-    public TeacherResponse create(@Valid @RequestBody TeacherRequest request) {
-        return teacherService.create(request);
-    }
+//    @PostMapping
+//    public TeacherResponse create(@Valid @RequestBody TeacherRequest request) {
+//        return teacherService.create(request);
+//    }
 
     @GetMapping("/experienced")
     public List<TeacherResponse> experienced(@RequestParam int experience) {

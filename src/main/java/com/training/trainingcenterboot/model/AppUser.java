@@ -8,19 +8,19 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Student {
+@Table(name = "users")
+public class AppUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    private String name;
-    private int age;
-
     @Column(unique = true, nullable = false)
-    private String email;
+    private String username;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private AppUser user;
+    @Column(nullable = false)
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 }

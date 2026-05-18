@@ -6,7 +6,14 @@ import lombok.Data;
 @Data
 public class StudentRequest {
 
+    @NotBlank(message = "Username обязателен")
+    private String username;
+
+    @NotBlank(message = "Password обязателен")
+    private String password;
+
     @NotBlank(message = "Имя студента не должно быть пустым")
+    @Size(max = 50, message = "Длина имени не должна превышать 50 символов")
     private String name;
 
     @Min(value = 10, message = "Возраст должен быть минимум 10")

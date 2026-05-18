@@ -11,9 +11,13 @@ import lombok.*;
 public class Teacher {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     private String name;
     private int experience;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private AppUser user;
 }

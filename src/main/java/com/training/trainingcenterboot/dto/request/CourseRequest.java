@@ -16,5 +16,6 @@ public class CourseRequest {
     private double price;
 
     @NotNull(message = "ID преподавателя обязателен")
+    @Min(value = 1, message = "ID не может быть отрицательным")
     private Long teacherId;
 }

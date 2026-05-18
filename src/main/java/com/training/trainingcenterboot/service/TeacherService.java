@@ -29,10 +29,10 @@ public class TeacherService {
                 .toList();
     }
 
-    public TeacherResponse create(TeacherRequest request) {
-        Teacher teacher = teacherMapper.toEntity(request);
-        return teacherMapper.toResponse(teacherRepository.save(teacher));
-    }
+//    public TeacherResponse create(TeacherRequest request) {
+//        Teacher teacher = teacherMapper.toEntity(request);
+//        return teacherMapper.toResponse(teacherRepository.save(teacher));
+//    }
 
     public List<TeacherResponse> getExperiencedTeachers(int experience) {
         return teacherRepository.experiencedTeachers(experience)
