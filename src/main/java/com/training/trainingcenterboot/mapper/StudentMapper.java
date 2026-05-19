@@ -1,6 +1,6 @@
 package com.training.trainingcenterboot.mapper;
 
-import com.training.trainingcenterboot.dto.request.StudentRequest;
+import com.training.trainingcenterboot.dto.request.StudentRegisterRequest;
 import com.training.trainingcenterboot.dto.response.StudentResponse;
 import com.training.trainingcenterboot.model.Student;
 import org.springframework.stereotype.Component;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class StudentMapper {
 
-    public Student toEntity(StudentRequest request) {
+    public Student toEntity(StudentRegisterRequest request) {
         Student student = new Student();
         student.setName(request.getName());
         student.setAge(request.getAge());

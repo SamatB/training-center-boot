@@ -1,6 +1,6 @@
 package com.training.trainingcenterboot.controller;
 
-import com.training.trainingcenterboot.dto.request.StudentRequest;
+import com.training.trainingcenterboot.dto.request.StudentRegisterRequest;
 import com.training.trainingcenterboot.dto.response.StudentResponse;
 import com.training.trainingcenterboot.service.StudentService;
 import jakarta.validation.Valid;
@@ -29,13 +29,13 @@ public class StudentController {
     }
 
 //    @PostMapping
-//    public StudentResponse create(@Valid @RequestBody StudentRequest request) {
+//    public StudentResponse create(@Valid @RequestBody StudentRegisterRequest request) {
 //        return studentService.create(request);
 //    }
 
     @PutMapping("/{id}")
     public StudentResponse update(@PathVariable Long id,
-                                  @Valid @RequestBody StudentRequest request) {
+                                  @Valid @RequestBody StudentRegisterRequest request) {
         return studentService.update(id, request);
     }
 

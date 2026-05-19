@@ -1,8 +1,7 @@
 package com.training.trainingcenterboot.service;
 
-import com.training.trainingcenterboot.dto.request.StudentRequest;
+import com.training.trainingcenterboot.dto.request.StudentRegisterRequest;
 import com.training.trainingcenterboot.dto.response.StudentResponse;
-import com.training.trainingcenterboot.exception.DuplicateResourceException;
 import com.training.trainingcenterboot.exception.ResourceNotFoundException;
 import com.training.trainingcenterboot.mapper.StudentMapper;
 import com.training.trainingcenterboot.model.Enrollment;
@@ -40,7 +39,7 @@ public class StudentService {
         return studentMapper.toResponse(student);
     }
 
-//    public StudentResponse create(StudentRequest request) {
+//    public StudentResponse create(StudentRegisterRequest request) {
 //        if (studentRepository.existsByEmail(request.getEmail())) {
 //            throw new DuplicateResourceException("Студент с таким email уже существует");
 //        }
@@ -51,7 +50,7 @@ public class StudentService {
 //        return studentMapper.toResponse(savedStudent);
 //    }
 
-    public StudentResponse update(Long id, StudentRequest request) {
+    public StudentResponse update(Long id, StudentRegisterRequest request) {
         Student student = findStudentById(id);
 
         student.setName(request.getName());

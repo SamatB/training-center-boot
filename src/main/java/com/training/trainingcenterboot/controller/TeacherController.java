@@ -1,9 +1,7 @@
 package com.training.trainingcenterboot.controller;
 
-import com.training.trainingcenterboot.dto.request.TeacherRequest;
 import com.training.trainingcenterboot.dto.response.TeacherResponse;
 import com.training.trainingcenterboot.service.TeacherService;
-import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +22,7 @@ public class TeacherController {
     }
 
 //    @PostMapping
-//    public TeacherResponse create(@Valid @RequestBody TeacherRequest request) {
+//    public TeacherResponse create(@Valid @RequestBody TeacherRegisterRequest request) {
 //        return teacherService.create(request);
 //    }
 

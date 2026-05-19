@@ -1,4 +1,4 @@
-package com.training.trainingcenterboot.service;
+package com.training.trainingcenterboot.security;
 
 import com.training.trainingcenterboot.model.AppUser;
 import com.training.trainingcenterboot.repository.AppUserRepository;

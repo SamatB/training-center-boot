@@ -4,7 +4,7 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data
-public class StudentRequest {
+public class StudentRegisterRequest {
 
     @NotBlank(message = "Username обязателен")
     private String username;

@@ -1,6 +1,5 @@
 package com.training.trainingcenterboot.service;
 
-import com.training.trainingcenterboot.dto.request.TeacherRequest;
 import com.training.trainingcenterboot.dto.response.TeacherResponse;
 import com.training.trainingcenterboot.exception.ResourceNotFoundException;
 import com.training.trainingcenterboot.mapper.TeacherMapper;
@@ -29,7 +28,7 @@ public class TeacherService {
                 .toList();
     }
 
-//    public TeacherResponse create(TeacherRequest request) {
+//    public TeacherResponse create(TeacherRegisterRequest request) {
 //        Teacher teacher = teacherMapper.toEntity(request);
 //        return teacherMapper.toResponse(teacherRepository.save(teacher));
 //    }
