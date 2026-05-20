@@ -43,7 +43,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // Проверяем:
         // 1. Header существует?
-        // 2. Начинается ли с Bearer?
+        // 2. Начинается ли с Bearer ?
         //
         // Если нет:
         // пропускаем request дальше без JWT проверки
