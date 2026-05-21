@@ -3,6 +3,7 @@ package com.training.trainingcenterboot.service;
 import com.training.trainingcenterboot.dto.request.EnrollmentRequest;
 import com.training.trainingcenterboot.dto.request.ProgressRequest;
 import com.training.trainingcenterboot.dto.response.EnrollmentResponse;
+import com.training.trainingcenterboot.dto.response.PageResponse;
 import com.training.trainingcenterboot.exception.BadRequestException;
 import com.training.trainingcenterboot.exception.DuplicateResourceException;
 import com.training.trainingcenterboot.exception.ResourceNotFoundException;
@@ -11,6 +12,8 @@ import com.training.trainingcenterboot.model.Course;
 import com.training.trainingcenterboot.model.Enrollment;
 import com.training.trainingcenterboot.model.Student;
 import com.training.trainingcenterboot.repository.EnrollmentRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -112,5 +115,52 @@ public class EnrollmentService {
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Запись на курс с id " + id + " не найдена")
                 );
+    }
+
+    //Ниже по пагинации методы
+
+    public PageResponse<EnrollmentResponse> getAll(Pageable pageable) {
+        Page<EnrollmentResponse> page = enrollmentRepository.findAll(pageable)
+                .map(enrollmentMapper::toResponse);
+
+        return toPageResponse(page);
+    }
+
+    public PageResponse<EnrollmentResponse> filterByPaymentStatus(boolean paymentStatus,
+                                                                  Pageable pageable) {
+        Page<EnrollmentResponse> page = enrollmentRepository
+                .findByPaymentStatus(paymentStatus, pageable)
+                .map(enrollmentMapper::toResponse);
+
+        return toPageResponse(page);
+    }
+
+    public PageResponse<EnrollmentResponse> filterByProgress(int progress,
+                                                             Pageable pageable) {
+        Page<EnrollmentResponse> page = enrollmentRepository
+                .findByProgressGreaterThanEqual(progress, pageable)
+                .map(enrollmentMapper::toResponse);
+
+        return toPageResponse(page);
+    }
+
+    public PageResponse<EnrollmentResponse> searchByCourseTitle(String title,
+                                                                Pageable pageable) {
+        Page<EnrollmentResponse> page = enrollmentRepository
+                .findByCourseTitleContainingIgnoreCase(title, pageable)
+                .map(enrollmentMapper::toResponse);
+
+        return toPageResponse(page);
+    }
+
+    private PageResponse<EnrollmentResponse> toPageResponse(Page<EnrollmentResponse> page) {
+        return new PageResponse<>(
+                page.getContent(),
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalElements(),
+                page.getTotalPages(),
+                page.isLast()
+        );
     }
 }

@@ -1,6 +1,7 @@
 package com.training.trainingcenterboot.service;
 
 import com.training.trainingcenterboot.dto.request.StudentRegisterRequest;
+import com.training.trainingcenterboot.dto.response.PageResponse;
 import com.training.trainingcenterboot.dto.response.StudentResponse;
 import com.training.trainingcenterboot.exception.ResourceNotFoundException;
 import com.training.trainingcenterboot.mapper.StudentMapper;
@@ -8,6 +9,8 @@ import com.training.trainingcenterboot.model.Enrollment;
 import com.training.trainingcenterboot.model.Student;
 import com.training.trainingcenterboot.repository.EnrollmentRepository;
 import com.training.trainingcenterboot.repository.StudentRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -89,5 +92,50 @@ public class StudentService {
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Студент с id " + id + " не найден")
                 );
+    }
+
+
+    //Ниже по пагинации методы
+
+    public PageResponse<StudentResponse> getAll(Pageable pageable) {
+        Page<StudentResponse> page = studentRepository.findAll(pageable)
+                .map(studentMapper::toResponse);
+
+        return toPageResponse(page);
+    }
+
+    public PageResponse<StudentResponse> searchByName(String name, Pageable pageable) {
+        Page<StudentResponse> page = studentRepository
+                .findByNameContainingIgnoreCase(name, pageable)
+                .map(studentMapper::toResponse);
+
+        return toPageResponse(page);
+    }
+
+    public PageResponse<StudentResponse> filterByAge(int minAge, int maxAge, Pageable pageable) {
+        Page<StudentResponse> page = studentRepository
+                .findByAgeBetween(minAge, maxAge, pageable)
+                .map(studentMapper::toResponse);
+
+        return toPageResponse(page);
+    }
+
+    public PageResponse<StudentResponse> searchByNameOrEmail(String keyword, Pageable pageable) {
+        Page<StudentResponse> page = studentRepository
+                .searchByNameOrEmail(keyword, pageable)
+                .map(studentMapper::toResponse);
+
+        return toPageResponse(page);
+    }
+
+    private PageResponse<StudentResponse> toPageResponse(Page<StudentResponse> page) {
+        return new PageResponse<>(
+                page.getContent(),
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalElements(),
+                page.getTotalPages(),
+                page.isLast()
+        );
     }
 }

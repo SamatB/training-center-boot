@@ -2,8 +2,10 @@ package com.training.trainingcenterboot.controller;
 
 import com.training.trainingcenterboot.dto.request.CourseRequest;
 import com.training.trainingcenterboot.dto.response.CourseResponse;
+import com.training.trainingcenterboot.dto.response.PageResponse;
 import com.training.trainingcenterboot.service.CourseService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,9 +21,40 @@ public class CourseController {
     }
 
     @GetMapping
-    public List<CourseResponse> getAll() {
-        return courseService.getAll();
+    public PageResponse<CourseResponse> getAll(Pageable pageable) {
+        return courseService.getAll(pageable);
     }
+
+    @GetMapping("/search")
+    public PageResponse<CourseResponse> searchByTitle(@RequestParam String title,
+                                                      Pageable pageable) {
+        return courseService.searchByTitle(title, pageable);
+    }
+
+    @GetMapping("/filter/price")
+    public PageResponse<CourseResponse> filterByPrice(@RequestParam double minPrice,
+                                                      @RequestParam double maxPrice,
+                                                      Pageable pageable) {
+        return courseService.filterByPrice(minPrice, maxPrice, pageable);
+    }
+
+    @GetMapping("/filter/duration")
+    public PageResponse<CourseResponse> filterByDuration(@RequestParam int duration,
+                                                         Pageable pageable) {
+        return courseService.filterByDuration(duration, pageable);
+    }
+
+    @GetMapping("/search/full")
+    public PageResponse<CourseResponse> searchByTitleOrTeacher(@RequestParam String keyword,
+                                                               Pageable pageable) {
+        return courseService.searchByTitleOrTeacher(keyword, pageable);
+    }
+
+
+//    @GetMapping
+//    public List<CourseResponse> getAll() {
+//        return courseService.getAll();
+//    }
 
     @GetMapping("/{id}")
     public CourseResponse getById(@PathVariable Long id) {

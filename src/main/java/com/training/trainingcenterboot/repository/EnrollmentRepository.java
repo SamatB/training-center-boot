@@ -1,6 +1,8 @@
 package com.training.trainingcenterboot.repository;
 
 import com.training.trainingcenterboot.model.Enrollment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -26,4 +28,10 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
     boolean existsByStudentIdAndCourseId(Long studentId, Long courseId);
 
     Enrollment findEnrollmentByStudent_Id(Long studentId);
+
+    Page<Enrollment> findByPaymentStatus(boolean paymentStatus, Pageable pageable);
+
+    Page<Enrollment> findByProgressGreaterThanEqual(int progress, Pageable pageable);
+
+    Page<Enrollment> findByCourseTitleContainingIgnoreCase(String title, Pageable pageable);
 }
