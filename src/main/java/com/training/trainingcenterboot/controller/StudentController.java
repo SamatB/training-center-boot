@@ -4,12 +4,16 @@ import com.training.trainingcenterboot.dto.request.StudentRegisterRequest;
 import com.training.trainingcenterboot.dto.response.PageResponse;
 import com.training.trainingcenterboot.dto.response.StudentResponse;
 import com.training.trainingcenterboot.service.StudentService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Students", description = "Операции со студентами")
 @RestController
 @RequestMapping("/students")
 public class StudentController {
@@ -20,28 +24,39 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-
+    @Operation(
+            summary = "Получить студентов",
+            description = "Возвращает студентов с pagination, sorting и pageable параметрами"
+    )
     @GetMapping
-    public PageResponse<StudentResponse> getAll(Pageable pageable) {
+    public PageResponse<StudentResponse> getAll(@ParameterObject Pageable pageable) {
         return studentService.getAll(pageable);
     }
 
+    @Operation(
+            summary = "Поиск студентов по имени",
+            description = "Ищет студентов по части имени без учета регистра"
+    )
     @GetMapping("/search")
     public PageResponse<StudentResponse> searchByName(@RequestParam String name,
-                                                      Pageable pageable) {
+                                                      @ParameterObject Pageable pageable) {
         return studentService.searchByName(name, pageable);
     }
 
+    @Operation(
+            summary = "Фильтр студентов по возрасту",
+            description = "Возвращает студентов в диапазоне возраста"
+    )
     @GetMapping("/filter/age")
     public PageResponse<StudentResponse> filterByAge(@RequestParam int minAge,
                                                      @RequestParam int maxAge,
-                                                     Pageable pageable) {
+                                                     @ParameterObject Pageable pageable) {
         return studentService.filterByAge(minAge, maxAge, pageable);
     }
 
     @GetMapping("/search/full")
     public PageResponse<StudentResponse> searchByNameOrEmail(@RequestParam String keyword,
-                                                             Pageable pageable) {
+                                                             @ParameterObject Pageable pageable) {
         return studentService.searchByNameOrEmail(keyword, pageable);
     }
 
