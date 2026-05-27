@@ -23,4 +23,15 @@ public class Student {
     @OneToOne
     @JoinColumn(name = "user_id")
     private AppUser user;
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "age=" + age +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", user=" + user +
+                '}';
+    }
 }

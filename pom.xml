@@ -91,6 +91,13 @@
             <version>2.8.9</version>
         </dependency>
 
+        <!-- Тестирование Spring Boot: JUnit 5, Mockito, AssertJ, MockMvc -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>

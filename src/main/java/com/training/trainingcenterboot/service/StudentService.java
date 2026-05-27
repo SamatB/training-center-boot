@@ -66,7 +66,7 @@ public class StudentService {
     public void delete(Long id) {
         Student student = findStudentById(id);
         Enrollment enrollment = enrollmentRepository.findEnrollmentByStudent_Id(id);
-        if (Objects.equals(enrollment.getStudent().getId(), student.getId())) {
+        if (enrollment != null && enrollment.getStudent() != null) {
             enrollment.setStudent(null);
             enrollmentRepository.save(enrollment);
         }
