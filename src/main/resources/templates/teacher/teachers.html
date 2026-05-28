@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Teachers</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="home-page">
+
+<div class="table-card">
+
+    <div class="page-header">
+        <div>
+            <h1>Teachers</h1>
+            <p class="subtitle">Список преподавателей учебного центра</p>
+        </div>
+
+        <a href="/mvc/teachers/create" class="small-btn">+ Добавить преподавателя</a>
+        <a href="/mvc/dashboard" class="small-btn">Личный кабинет</a>
+        <a href="/" class="small-btn">Главная</a>
+    </div>
+
+    <form action="/mvc/teachers/search" method="get" class="search-form">
+
+        <input
+                type="text"
+                name="name"
+                th:value="${searchValue}"
+                placeholder="Поиск преподавателя"
+                class="search-input"
+        >
+
+        <button type="submit" class="small-btn">
+            Search
+        </button>
+
+        <a href="/mvc/teachers" class="small-btn">
+            Reset
+        </a>
+
+    </form>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Имя</th>
+            <th>Опыт</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="teacher : ${teachers}">
+            <td th:text="${teacher.id}"></td>
+            <td th:text="${teacher.name}"></td>
+            <td th:text="${teacher.experience}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>

@@ -1,4 +1,4 @@
-package com.training.trainingcenterboot.controller;
+package com.training.trainingcenterboot.controller.rest;
 
 import com.training.trainingcenterboot.dto.response.PageResponse;
 import com.training.trainingcenterboot.dto.response.TeacherResponse;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/teachers")
+@RequestMapping("/api/teachers")
 public class TeacherController {
 
     private final TeacherService teacherService;

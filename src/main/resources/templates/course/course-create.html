@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Course</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="home-page">
+
+<div class="home-card">
+
+    <div class="logo">📚</div>
+
+    <h1>Create Course</h1>
+
+    <p class="subtitle">Добавление нового курса</p>
+
+    <div class="line"></div>
+
+    <form th:action="@{/mvc/courses/create}"
+          th:object="${course}"
+          method="post">
+
+        <div class="form-group">
+            <label>Title</label>
+            <input type="text" th:field="*{title}" placeholder="Название курса" required>
+        </div>
+
+        <div class="form-group">
+            <label>Price</label>
+            <input type="number" th:field="*{price}" placeholder="Цена курса" required>
+        </div>
+
+        <div class="form-group">
+            <label>Duration</label>
+            <input type="number" th:field="*{duration}" placeholder="Длительность" required>
+        </div>
+
+        <div class="form-group">
+            <label>Teacher ID</label>
+            <input type="number" th:field="*{teacherId}" placeholder="ID преподавателя" required>
+        </div>
+
+        <button class="submit-btn" type="submit">Создать курс</button>
+    </form>
+
+    <div class="home-link">
+        <a href="/mvc/courses">Назад к курсам</a>
+        <a href="/mvc/dashboard" class="small-btn">Личный кабинет</a>
+    </div>
+
+</div>
+
+</body>
+</html>

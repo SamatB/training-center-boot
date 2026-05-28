@@ -6,8 +6,10 @@ import com.training.trainingcenterboot.dto.response.PageResponse;
 import com.training.trainingcenterboot.exception.ResourceNotFoundException;
 import com.training.trainingcenterboot.mapper.CourseMapper;
 import com.training.trainingcenterboot.model.Course;
+import com.training.trainingcenterboot.model.Enrollment;
 import com.training.trainingcenterboot.model.Teacher;
 import com.training.trainingcenterboot.repository.CourseRepository;
+import com.training.trainingcenterboot.repository.EnrollmentRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,13 +20,15 @@ import java.util.List;
 public class CourseService {
 
     private final CourseRepository courseRepository;
+    private final EnrollmentRepository enrollmentRepository;
     private final TeacherService teacherService;
     private final CourseMapper courseMapper;
 
-    public CourseService(CourseRepository courseRepository,
+    public CourseService(CourseRepository courseRepository, EnrollmentRepository enrollmentRepository,
                          TeacherService teacherService,
                          CourseMapper courseMapper) {
         this.courseRepository = courseRepository;
+        this.enrollmentRepository = enrollmentRepository;
         this.teacherService = teacherService;
         this.courseMapper = courseMapper;
     }
@@ -48,6 +52,29 @@ public class CourseService {
     public CourseResponse getById(Long id) {
         Course course = findCourseById(id);
         return courseMapper.toResponse(course);
+    }
+
+    public CourseResponse update(Long id, CourseRequest request) {
+        Course course = findCourseById(id);
+        Teacher teacher = teacherService.findTeacherById(request.getTeacherId());
+
+        course.setTitle(request.getTitle());
+        course.setDuration(request.getDuration());
+        course.setPrice(request.getPrice());
+        course.setTeacher(teacher);
+
+        Course savedCourse = courseRepository.save(course);
+
+        return courseMapper.toResponse(savedCourse);
+    }
+
+    public void delete(Long id) {
+        Course course = findCourseById(id);
+
+        List<Enrollment> enrollments = enrollmentRepository.findByCourseId(id);
+        enrollmentRepository.deleteAll(enrollments);
+
+        courseRepository.delete(course);
     }
 
     public List<CourseResponse> getCheapCourses(double price) {

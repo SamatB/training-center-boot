@@ -16,9 +16,10 @@ public class StudentRegisterRequest {
     @Size(max = 50, message = "Длина имени не должна превышать 50 символов")
     private String name;
 
+    @NotNull(message = "Возраст обязателен")
     @Min(value = 10, message = "Возраст должен быть минимум 10")
     @Max(value = 80, message = "Возраст должен быть максимум 80")
-    private int age;
+    private Integer age;
 
     @NotBlank(message = "Email обязателен")
     @Email(message = "Некорректный email")

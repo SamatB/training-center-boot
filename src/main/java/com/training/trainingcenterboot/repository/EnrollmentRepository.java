@@ -12,6 +12,8 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
 
     List<Enrollment> findByPaymentStatus(boolean paymentStatus);
 
+    List<Enrollment> findByCourseId(Long courseId);
+
     @Query("SELECT e FROM Enrollment e WHERE e.progress >= :progress")
     List<Enrollment> successfulStudents(int progress);
 

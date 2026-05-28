@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация преподавателя</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="home-page">
+
+<div class="home-card">
+
+    <div class="logo">🎓</div>
+
+    <h1>Teacher Register</h1>
+
+    <p class="subtitle">
+        Регистрация преподавателя
+    </p>
+
+    <div class="line"></div>
+
+    <form th:action="@{/mvc/register/teacher}"
+          th:object="${teacher}"
+          method="post">
+
+        <div class="form-group">
+            <label>Username</label>
+
+            <input
+                    type="text"
+                    th:field="*{username}"
+                    placeholder="Введите username">
+        </div>
+
+        <div class="form-group">
+            <label>Password</label>
+
+            <input
+                    type="password"
+                    th:field="*{password}"
+                    placeholder="Введите пароль">
+        </div>
+
+        <div class="form-group">
+            <label>Name</label>
+
+            <input
+                    type="text"
+                    th:field="*{name}"
+                    placeholder="Введите имя">
+        </div>
+
+        <div class="form-group">
+            <label>Experience</label>
+
+            <input
+                    type="number"
+                    th:field="*{experience}"
+                    placeholder="Введите стаж">
+        </div>
+
+        <button class="submit-btn" type="submit">
+            Зарегистрировать преподавателя
+        </button>
+
+    </form>
+
+    <div class="home-link">
+        <a href="/">На главную</a>
+    </div>
+
+</div>
+
+</body>
+</html>

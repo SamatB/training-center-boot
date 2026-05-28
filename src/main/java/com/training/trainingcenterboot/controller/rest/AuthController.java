@@ -1,5 +1,6 @@
-package com.training.trainingcenterboot.controller;
+package com.training.trainingcenterboot.controller.rest;
 
+import com.training.trainingcenterboot.dto.request.AdminRegisterRequest;
 import com.training.trainingcenterboot.dto.request.LoginRequest;
 import com.training.trainingcenterboot.dto.request.StudentRegisterRequest;
 import com.training.trainingcenterboot.dto.request.TeacherRegisterRequest;
@@ -19,6 +20,11 @@ public class AuthController {
 
     public AuthController(AuthService authService) {
         this.authService = authService;
+    }
+
+    @PostMapping("/register/admin")
+    public String registerAdmin(@Valid @RequestBody AdminRegisterRequest request) {
+        return authService.registerAdmin(request);
     }
 
     @PostMapping("/register/student")

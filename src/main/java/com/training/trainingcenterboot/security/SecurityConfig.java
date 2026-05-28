@@ -33,25 +33,61 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
 
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
+                //Так как MVC включили в проекте, чтобы браузер сам всегда имел токен в запросах,
+                // нам нужно убрать этот кусок - он не дает, чтобы браузер хранил кууки - токен
+//                .sessionManagement(session ->
+//                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                )
 
                 .authorizeHttpRequests(auth -> auth
 
                         .requestMatchers(
+                                "/",
+                                "/mvc/login",
+                                "/mvc/student",
+                                "/mvc/teacher",
+                                "/mvc/admin",
+                                "/mvc/register/**",
+                                "/css/**",
+                                "/images/**",
+                                "/js/**",
                                 "/auth/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html"
                         ).permitAll()
 
-                        .requestMatchers("/students/**").hasAnyRole("STUDENT", "ADMIN")
-                        .requestMatchers("/teachers/**").hasAnyRole("TEACHER", "ADMIN")
-                        .requestMatchers("/courses/**").hasAnyRole("STUDENT", "TEACHER", "ADMIN")
-                        .requestMatchers("/enrollments/**").hasAnyRole("STUDENT", "ADMIN", "TEACHER")
+                        .requestMatchers("/mvc/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/mvc/student/**").hasRole("STUDENT")
+                        .requestMatchers("/mvc/teacher/**").hasRole("TEACHER")
+                        .requestMatchers("/mvc/students/**").hasAnyRole("ADMIN", "TEACHER")
+                        .requestMatchers("/mvc/teachers/**").hasRole("ADMIN")
+                        .requestMatchers("/mvc/courses/create").hasRole("ADMIN")
+                        .requestMatchers("/mvc/courses/edit/**").hasRole("ADMIN")
+                        .requestMatchers("/mvc/courses/delete/**").hasRole("ADMIN")
+                        .requestMatchers("/mvc/courses/**").hasAnyRole("ADMIN", "TEACHER", "STUDENT")
+                        .requestMatchers("/mvc/enrollments/**").hasAnyRole("ADMIN", "TEACHER", "STUDENT")
+                        .requestMatchers("/mvc/dashboard").authenticated()
+
+                        .requestMatchers("/api/students/**").hasAnyRole("STUDENT", "ADMIN")
+                        .requestMatchers("/api/teachers/**").hasAnyRole("TEACHER", "ADMIN")
+                        .requestMatchers("/api/courses/**").hasAnyRole("STUDENT", "TEACHER", "ADMIN")
+
+                        .requestMatchers("/api/enrollments/**").hasAnyRole("STUDENT", "ADMIN", "TEACHER")
+                        .requestMatchers("/api/admins/**").hasRole("ADMIN")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
 
                         .anyRequest().authenticated()
+                )
+
+                .formLogin(form -> form
+                        .loginPage("/mvc/login")
+                        .loginProcessingUrl("/mvc/login")
+                        .defaultSuccessUrl("/mvc/dashboard", true)
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/mvc/login")
                 )
 
 //                .httpBasic(Customizer.withDefaults())

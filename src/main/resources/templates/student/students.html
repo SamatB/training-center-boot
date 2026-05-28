@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Students</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="home-page">
+
+<div class="table-card">
+
+    <div class="page-header">
+        <div>
+            <h1>Students</h1>
+            <p class="subtitle">Список студентов</p>
+        </div>
+
+        <div>
+            <a href="/mvc/dashboard" class="small-btn">Личный кабинет</a>
+            <a href="/" class="small-btn">Главная</a>
+        </div>
+    </div>
+
+    <form action="/mvc/students/search" method="get" class="search-form">
+        <input type="text" name="name" th:value="${searchValue}"
+               placeholder="Поиск студента по имени" class="search-input">
+
+        <button type="submit" class="small-btn">Search</button>
+        <a href="/mvc/students" class="small-btn">Reset</a>
+    </form>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Имя</th>
+            <th>Возраст</th>
+            <th>Email</th>
+            <th>Действия</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="student : ${students}">
+            <td th:text="${student.id}"></td>
+            <td th:text="${student.name}"></td>
+            <td th:text="${student.age}"></td>
+            <td th:text="${student.email}"></td>
+            <td class="actions">
+                <a th:href="@{/mvc/students/edit/{id}(id=${student.id})}"
+                   class="action-btn edit-btn">Edit</a>
+
+                <form th:action="@{/mvc/students/delete/{id}(id=${student.id})}"
+                      method="post" class="inline-form">
+                    <button type="submit" class="action-btn delete-btn">Delete</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="pagination" th:if="${currentPage != null and totalPages != null}">
+        <a th:if="${currentPage > 0}"
+           th:href="@{/mvc/students/page(page=${currentPage - 1})}"
+           class="small-btn">Prev</a>
+
+        <span class="page-info">
+            Page [[${currentPage + 1}]] / [[${totalPages}]]
+        </span>
+
+        <a th:if="${currentPage + 1 < totalPages}"
+           th:href="@{/mvc/students/page(page=${currentPage + 1})}"
+           class="small-btn">Next</a>
+    </div>
+
+</div>
+
+</body>
+</html>

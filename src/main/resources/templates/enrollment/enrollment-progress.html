@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Progress</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="home-page">
+
+<div class="home-card">
+
+    <div class="logo">📈</div>
+
+    <h1>Update Progress</h1>
+
+    <p class="subtitle">Обновление прогресса студента</p>
+
+    <div class="line"></div>
+
+    <form th:action="@{/mvc/enrollments/progress/{id}(id=${enrollmentId})}"
+          th:object="${progressRequest}"
+          method="post">
+
+        <div class="form-group">
+            <label>Progress</label>
+            <input type="number" th:field="*{progress}" placeholder="Прогресс от 0 до 100" required>
+        </div>
+
+        <button class="submit-btn" type="submit">
+            Сохранить прогресс
+        </button>
+    </form>
+
+    <div class="home-link">
+        <a href="/mvc/dashboard" class="small-btn">Личный кабинет</a>
+        <a href="/mvc/enrollments">Назад к записям</a>
+    </div>
+
+</div>
+
+</body>
+</html>

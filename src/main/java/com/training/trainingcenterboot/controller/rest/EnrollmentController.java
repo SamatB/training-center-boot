@@ -1,4 +1,4 @@
-package com.training.trainingcenterboot.controller;
+package com.training.trainingcenterboot.controller.rest;
 
 import com.training.trainingcenterboot.dto.request.EnrollmentRequest;
 import com.training.trainingcenterboot.dto.request.ProgressRequest;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/enrollments")
+@RequestMapping("/api/enrollments")
 public class EnrollmentController {
 
     private final EnrollmentService enrollmentService;

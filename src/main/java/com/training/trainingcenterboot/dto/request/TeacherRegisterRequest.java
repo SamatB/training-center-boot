@@ -17,5 +17,5 @@ public class TeacherRegisterRequest {
 
     @Min(value = 0, message = "Опыт не может быть отрицательным")
     @Max(value = 50, message = "Опыт не может быть больше 50 лет")
-    private int experience;
+    private Integer experience;
 }

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="home-page">
+
+<div class="home-card">
+    <div class="logo">🛡️</div>
+
+    <h1>Admin Panel</h1>
+
+    <p class="subtitle">Панель администратора</p>
+    <p class="welcome-text">
+        Добро пожаловать, <span th:text="${username}"></span>
+    </p>
+
+    <div class="line"></div>
+
+    <div class="menu">
+        <a href="/mvc/students" class="menu-item orange">
+            <span class="icon">👤</span>
+            <span>
+                <strong>Студенты</strong>
+                <small>Управление студентами</small>
+            </span>
+            <b>›</b>
+        </a>
+
+        <a href="/mvc/teachers" class="menu-item green">
+            <span class="icon">🎓</span>
+            <span>
+                <strong>Преподаватели</strong>
+                <small>Управление преподавателями</small>
+            </span>
+            <b>›</b>
+        </a>
+
+        <a href="/mvc/courses" class="menu-item purple">
+            <span class="icon">📚</span>
+            <span>
+                <strong>Курсы</strong>
+                <small>Управление курсами</small>
+            </span>
+            <b>›</b>
+        </a>
+
+        <a href="/mvc/enrollments" class="menu-item blue">
+            <span class="icon">✅</span>
+            <span>
+                <strong>Записи на курсы</strong>
+                <small>Управление enrollment</small>
+            </span>
+            <b>›</b>
+        </a>
+    </div>
+
+    <form action="/logout" method="post">
+
+        <button class="submit-btn" type="submit">
+            Logout
+        </button>
+
+    </form>
+</div>
+
+</body>
+</html>

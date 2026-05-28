@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Enrollments</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="home-page">
+
+<div class="table-card">
+
+    <div class="page-header">
+        <div>
+            <h1>Enrollments</h1>
+            <p class="subtitle">Записи студентов на курсы</p>
+        </div>
+
+        <div>
+            <a href="/mvc/enrollments/create" class="small-btn">+ Добавить запись</a>
+            <a href="/mvc/dashboard" class="small-btn">Личный кабинет</a>
+            <a href="/" class="small-btn">Главная</a>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Студент</th>
+            <th>Курс</th>
+            <th>Оплата</th>
+            <th>Прогресс</th>
+            <th>Действия</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="enrollment : ${enrollments}">
+            <td th:text="${enrollment.id}"></td>
+            <td th:text="${enrollment.studentName}"></td>
+            <td th:text="${enrollment.courseTitle}"></td>
+            <td th:text="${enrollment.paymentStatus ? 'Оплачено' : 'Не оплачено'}"></td>
+            <td th:text="${enrollment.progress + '%'}"></td>
+
+            <td class="actions">
+                <form th:action="@{/mvc/enrollments/pay/{id}(id=${enrollment.id})}"
+                      method="post"
+                      class="inline-form"
+                      th:if="${!enrollment.paymentStatus}">
+                    <button type="submit" class="action-btn edit-btn">
+                        Pay
+                    </button>
+                </form>
+
+                <a th:href="@{/mvc/enrollments/progress/{id}(id=${enrollment.id})}"
+                   class="action-btn edit-btn">
+                    Progress
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>

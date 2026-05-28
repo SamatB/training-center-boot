@@ -1,4 +1,4 @@
-package com.training.trainingcenterboot.controller;
+package com.training.trainingcenterboot.controller.rest;
 
 import com.training.trainingcenterboot.dto.request.StudentRegisterRequest;
 import com.training.trainingcenterboot.dto.response.PageResponse;
@@ -15,7 +15,7 @@ import java.util.List;
 
 @Tag(name = "Students", description = "Операции со студентами")
 @RestController
-@RequestMapping("/students")
+@RequestMapping("/api/students")
 public class StudentController {
 
     private final StudentService studentService;

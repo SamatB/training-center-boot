@@ -1,4 +1,4 @@
-package com.training.trainingcenterboot.controller;
+package com.training.trainingcenterboot.controller.rest;
 
 import com.training.trainingcenterboot.dto.request.CourseRequest;
 import com.training.trainingcenterboot.dto.response.CourseResponse;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/courses")
+@RequestMapping("/api/courses")
 public class CourseController {
 
     private final CourseService courseService;

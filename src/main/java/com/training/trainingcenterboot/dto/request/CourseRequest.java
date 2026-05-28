@@ -10,10 +10,10 @@ public class CourseRequest {
     private String title;
 
     @Min(value = 1, message = "Длительность должна быть минимум 1 месяц")
-    private int duration;
+    private Integer duration;
 
     @Min(value = 0, message = "Цена не может быть отрицательной")
-    private double price;
+    private Double price;
 
     @NotNull(message = "ID преподавателя обязателен")
     @Min(value = 1, message = "ID не может быть отрицательным")

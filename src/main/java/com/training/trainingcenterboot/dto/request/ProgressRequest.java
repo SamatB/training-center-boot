@@ -9,5 +9,5 @@ public class ProgressRequest {
 
     @Min(value = 0, message = "Прогресс не может быть меньше 0")
     @Max(value = 100, message = "Прогресс не может быть больше 100")
-    private int progress;
+    private Integer progress;
 }

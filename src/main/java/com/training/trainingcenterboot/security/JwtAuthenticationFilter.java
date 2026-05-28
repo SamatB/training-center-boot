@@ -38,6 +38,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
+        if (request.getRequestURI().startsWith("/mvc")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         // Получаем Authorization header
         String authHeader = request.getHeader("Authorization");
 
